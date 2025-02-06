@@ -29,37 +29,29 @@ const MovieCard = ({
     setIsHovered(false);
   };
 
-  // Hide hover card on scroll
   useEffect(() => {
-    const handleScroll = () => {
-      setIsHovered(false); // Hide the hover card when scrolling
-    };
-
-    window.addEventListener("scroll", handleScroll); // Add scroll event listener
-    return () => {
-      window.removeEventListener("scroll", handleScroll); // Cleanup on unmount
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isHovered) {
+    if (isHovered && movieId) {
       const fetchTrailer = async () => {
-        const data = await fetch(
-          "https://api.themoviedb.org/3/movie/" + movieId + "/videos",
-          TMBD_API_OPTIONS
-        );
-        const json = await data.json();
-        if (!json.results) return;
+        try {
+          const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}/videos`,
+            TMBD_API_OPTIONS
+          );
+          const json = await response.json();
+          if (!json.results) return;
 
-        const trailerList = json.results.filter(
-          (video) => video.type === "Trailer"
-        );
+          const trailerList = json.results.filter(
+            (video) => video.type === "Trailer"
+          );
 
-        const trailerVideo = trailerList.length
-          ? trailerList[0]
-          : json.results[0];
-        if (trailerVideo) {
-          setTrailerKey(trailerVideo.key);
+          const trailerVideo = trailerList.length
+            ? trailerList[0]
+            : json.results[0];
+          if (trailerVideo) {
+            setTrailerKey(trailerVideo.key);
+          }
+        } catch (error) {
+          console.error("Failed to fetch trailer:", error);
         }
       };
       fetchTrailer();
@@ -72,20 +64,30 @@ const MovieCard = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img
-        src={IMG_CDN + poster_path}
-        alt={poster_path}
+      {/* <img
+        src={poster_path ? IMG_CDN + poster_path : "/fallback-image.jpg"}
+        alt={title}
         className="rounded-md transition-transform duration-300 hover:scale-110"
-      />
-
-      {isHovered && trailerKey && (
-        <MovieHoverCard
-          trailerKey={trailerKey}
-          title={title}
-          release_date={release_date}
-          vote_average={vote_average}
-          mousePosition={mousePosition} // Pass mouse position to hover card
-        />
+      /> */}
+      {poster_path ? (
+        <div>
+          <img
+            src={IMG_CDN + poster_path}
+            className="rounded-md transition-transform duration-300 hover:scale-110 w-full h-full object-cover"
+            alt="hello"
+          />
+          {isHovered && trailerKey && (
+            <MovieHoverCard
+              trailerKey={trailerKey}
+              title={title}
+              release_date={release_date}
+              vote_average={vote_average}
+              mousePosition={mousePosition}
+            />
+          )}
+        </div>
+      ) : (
+        <></>
       )}
     </div>
   );

@@ -4,6 +4,7 @@ import { addGeminiMovie } from "../utils/geminiSlice";
 import { useDispatch } from "react-redux";
 // import { GoogleGenerativeAI } from "@google/generative-ai";
 import ShowGeminiResults from "./ShowGeminiResults";
+import Header from "./Header";
 
 const GeminiSearch = () => {
   const searchText = useRef();
@@ -55,8 +56,9 @@ const GeminiSearch = () => {
   };
 
   return (
-    <div className="flex">
-      <img src={BG_IMG} alt="BG_IMG" className="brightness-50" />
+    <div className="flex relative">
+      <Header></Header>
+      <img src={BG_IMG} alt="BG_IMG" className="brightness-50 fixed" />
       <form
         className="absolute w-1/2 top-20 left-[50%] transform -translate-x-1/2 bg-black grid grid-cols-12"
         onSubmit={(e) => e.preventDefault()}
@@ -75,7 +77,9 @@ const GeminiSearch = () => {
         </button>
       </form>
 
-      <ShowGeminiResults />
+      <div className="absolute mt-48">
+        <ShowGeminiResults />
+      </div>
     </div>
   );
 };

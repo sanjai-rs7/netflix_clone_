@@ -3,20 +3,18 @@ import MovieList from "./MovieList";
 
 const ShowGeminiResults = () => {
   const { movieResults, movieNames } = useSelector((store) => store.gemini);
-  if (!movieNames) return null;
   console.log(movieResults);
-  console.log(movieNames);
+
+  if (!movieNames || !movieResults) return null;
 
   return (
-    <div className="p-4 m-4 bg-black text-white bg-opacity-90">
-      <div>
+    <div className="relative p-4 text-white w-full ">
+      <div className="relative z-10 flex flex-col items-center w-full">
         {movieNames.map((movieName, index) => (
-          // console.log(movieName)
-          // console.log(movieResults[index])
           <MovieList
             key={movieName}
             title={movieName}
-            movieList={movieResults[index]}
+            movieList={movieResults[index] || []}
           />
         ))}
       </div>

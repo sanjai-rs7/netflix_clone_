@@ -8,6 +8,7 @@ import { addUser, removeUser } from "../utils/userSlice";
 import { useEffect, useState } from "react";
 import { FaSearch, FaBell } from "react-icons/fa";
 import { toggleShowGeminiSearch } from "../utils/geminiSlice.js";
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const showGeminiSearch = useSelector(
@@ -97,9 +98,15 @@ const Header = () => {
             src={NETFLIX_LOGO}
             alt="Netflix Logo"
             className="w-24 cursor-pointer"
+            onClick={handleGeminiSearchClick}
           />
           <ul className="hidden md:flex space-x-6 text-sm">
-            <li className="cursor-pointer hover:text-gray-400">Home</li>
+            <li
+              className="cursor-pointer hover:text-gray-400"
+              onClick={handleGeminiSearchClick}
+            >
+              Home
+            </li>
             <li className="cursor-pointer hover:text-gray-400">TV Shows</li>
             <li className="cursor-pointer hover:text-gray-400">Movies</li>
             <li className="cursor-pointer hover:text-gray-400">
